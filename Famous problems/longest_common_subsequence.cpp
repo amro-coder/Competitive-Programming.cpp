@@ -1,3 +1,9 @@
+//problem Statement:
+//Given two strings, find the longest subsequence common both of them.
+//This problem differs from problems of finding common substrings:
+//unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences
+//
+//solution:
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -36,7 +42,26 @@ int main() {
             }
         }
     }
-    cout<<ans<<'\n'<<s1.substr(index,ans);
+    //reconstruct solution
+    string subsequence="";
+    int i=0,j=0;
+    while (true){
+        if(i>=n or j>=m)
+            break;
+        if(s1[i]==s2[j]) {
+            subsequence.PB(s1[i]);
+            i++;
+            j++;
+        }
+        else{
+            if(dp[i+1][j]>dp[i][j+1])
+                i++;
+            else
+                j++;
+        }
+
+    }
+    cout<<ans<<'\n'<<subsequence;
 
     return 0;
 }

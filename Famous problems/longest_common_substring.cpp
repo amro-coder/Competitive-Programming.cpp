@@ -1,3 +1,11 @@
+//problem Statement:
+//Suppose we have two words made up from some letters, such as
+//        V = T G A T G G A T C
+//W = G T T T G C A C
+//        We want to find the longest contiguous sequence of letters (subword) that is contained in both words.
+//In this case, the longest common substring is "T G"
+//
+//Solution
 #include <bits/stdc++.h>
 
 using namespace std;
