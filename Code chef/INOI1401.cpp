@@ -1,3 +1,9 @@
+//problem Statement:
+//In a grid of size R x C, you need to find the number of paths from the top-left to the bottom-right.
+//You may only move 1 block to the right or one block down in each step.
+//You may not go through any blocked intersections (given), and you may take at most d consecutive steps in the same direction. R, C <= 300.
+//
+//solution:
 #include <bits/stdc++.h>
 
 using namespace std;
