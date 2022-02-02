@@ -41,6 +41,7 @@ int main() {
         }
     cout<<dp[n][m]<<'\n';
 //  reconstruct solution:
+//how to change s1 to be s2
     int i=n,j=m;
     vector<string> ans;
     while (i>0 && j>0){
@@ -58,13 +59,14 @@ int main() {
         } else {
             if (change_cost == 1) {
                 //chenge s1[i] to s2[j]
-                ans.PB("change " + s1.substr(i-1,1) + " in index " + to_string(i) + " to " + s2.substr(j-1,1) + " in index " + to_string(j));
+                ans.PB("change " + s1.substr(i-1,1) + " in index " + to_string(i) + " to " + s2.substr(j-1,1));
             }
             i--;
             j--;
         }
 
     }
+    reverse(ans.begin(),ans.end());
     for (auto i:ans)
         cout<<i<<'\n';
     return 0;
