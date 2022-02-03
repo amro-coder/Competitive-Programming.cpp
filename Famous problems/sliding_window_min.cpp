@@ -40,7 +40,7 @@ int main() {
 
     int start=0;
     while (start+window_size<=n){
-        if(ans.front().S<start)
+        if(!ans.empty() && (ans.front().S<start))
             ans.pop_front();
         int current_element=start+window_size-1;
         if (!ans.empty() && (ans.back().F > x[current_element]))
