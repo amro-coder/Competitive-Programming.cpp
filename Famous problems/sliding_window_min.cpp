@@ -28,15 +28,14 @@ int main() {
     for(auto &i:x)cin>>i;
     deque<pi> ans;
 
-    int first_min= min_element(x.begin(),x.begin()+window_size)-x.begin();
-    ans.PB(MP(x[first_min],first_min));
-    int i=first_min+1;
+    int i=0;
     while (i<window_size-1) {
-        if (ans.back().F > x[i])
+        if (!ans.empty() &&(ans.back().F > x[i]))
             ans.pop_back();
         else{
             ans.PB(MP(x[i],i));
-            i++;}
+            i++;
+        }
     }
 
     int start=0;
