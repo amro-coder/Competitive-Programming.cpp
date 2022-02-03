@@ -28,12 +28,14 @@ int main() {
     for (auto &i:x)cin>>i;
     int i=0,j=0,sum=0;
     bool ans=false;
-    while(i<n && j<n)
+    while(true)
     {
         if(sum==target){
             ans= true;
             break;
-        } else
+        }
+        if(i>=n | j>=n)
+            break;
         if(sum<target){
             sum+=x[j];
             j++;
@@ -52,8 +54,4 @@ int main() {
 
 
 
-
-//
-// Created by amroa on 03/02/2022.
-//
 
