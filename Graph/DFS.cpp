@@ -24,44 +24,23 @@ void print(vi x){
 
 //graph with no weights
 vector<vi> graph;
-void reset_graph_to_size(int n){
-    graph.resize(n+1);
-    for(int i=0;i<n;i++)
-        graph[i].resize(0);
-    return;
-}
-
-void add_edge_both_directions(int a,int b){
-    graph[a].PB(b);
-    graph[b].PB(a);
-}
-vb create_visited(){
-    int n=graph.size();
-    vb visited(n);
-    return visited;
-}
-
+int n,m;
+vb visited;
 void DFS(int node){
-    vb visited=create_visited();
     vi stack={node};
     while (!stack.empty()){
         int parent=stack.back();
         stack.pop_back();
         if(!visited[parent]){
+// main difference here the parent is the one becoming true not children, because we visit nodes in the order of parents taken.
             visited[parent]=true;
-            cout<<parent<<'\n';
-            for (auto child:graph[parent]) stack.PB(child);
+            cout<<parent<<' ';
+            for (auto child:graph[parent])
+                if(!visited[child])
+                    stack.PB(child);
         }
     }
-    return;
-}
-vb visited;
-void recursive_dfs(int node) {
-    if(!visited[node]){
-        cout<<node<<'\n';
-        visited[node]=true;
-        for(auto child:graph[node])recursive_dfs(child);
-    }
+    cout<<'\n';
     return;
 }
 
@@ -69,16 +48,27 @@ void recursive_dfs(int node) {
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n,m,start;cin>>n>>m>>start;
-    reset_graph_to_size(n);
+    int start;
+    cin>>n>>m>>start;
+    graph.resize(n+1);
     for(int i=0;i<m;i++){
         int a,b;cin>>a>>b;
-        add_edge_both_directions(a,b);
+        graph[a].PB(b);
+        graph[b].PB(a);
     }
-    cout<<"iterative approach"<<'\n';
+    visited.resize(n+1);
     DFS(start);
-    cout<<"recursive approach"<<'\n';
-    visited=create_visited();
-    recursive_dfs(start);
     return 0;
 }
+//example for input:
+//10 10 0
+//0 1
+//0 3
+//0 2
+//1 4
+//3 5
+//5 7
+//3 6
+//2 8
+//8 9
+//9 10

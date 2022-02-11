@@ -21,35 +21,15 @@ void print(vi x){
         cout<<i<<' ';
     cout<<'\n';
 }
+// notice that the BFS visits the nodes in increasing order of their distances from the beginning node
+// meaning that each node is going to be visited by the best distance only.
 
 //graph with no weights
 vector<vi> graph;
-void reset_graph_to_size(int n){
-    graph.resize(n+1);
-    for(int i=0;i<n;i++)
-        graph[i].resize(0);
-    return;
-}
-
-void add_edge_both_directions(int a,int b){
-    graph[a].PB(b);
-    graph[b].PB(a);
-}
-vb create_visited(){
-    int n=graph.size();
-    vb visited(n);
-    return visited;
-}
-vi initalize_nodes_values(int value){
-    int n=graph.size();
-    vi nodes(n,value);
-    return nodes;
-}
-// notice that the BFS visits the nodes in increasing order of their distances from the beginning node
-// meaning that each node is going to be visited by the best distance only
+int n,m;
+vb visited;
 vi BFS(int node){
-    vi distances= initalize_nodes_values(-1);
-    vb visited=create_visited();
+    vi distances(n+1,-1);
     queue<int> q;
     q.push(node);
     visited[node]=true;
@@ -58,6 +38,7 @@ vi BFS(int node){
         int parent=q.front();q.pop();// already visited
         for (auto child:graph[parent]){
             if(!visited[child]){
+//notice we make the child visited unlike DFS because we visit the children of each current node.
                 visited[child]=true;
                 q.push(child);
                 distances[child]=distances[parent]+1;
@@ -68,17 +49,31 @@ vi BFS(int node){
     return distances;
 }
 
-
-
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n,m,start;cin>>n>>m>>start;
-    reset_graph_to_size(n);
+    int start;
+    cin>>n>>m>>start;
+    graph.resize(n+1);
     for(int i=0;i<m;i++){
         int a,b;cin>>a>>b;
-        add_edge_both_directions(a,b);
+        graph[a].PB(b);
+        graph[b].PB(a);
     }
+    visited.resize(n+1);
     print(BFS(start));
     return 0;
 }
+
+//example for input:
+//10 10 0
+//0 1
+//0 3
+//0 2
+//1 4
+//3 5
+//5 7
+//3 6
+//2 8
+//8 9
+//9 10
