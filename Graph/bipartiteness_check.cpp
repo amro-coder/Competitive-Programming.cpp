@@ -5,6 +5,7 @@ typedef long long ll ;
 typedef long double ld;
 typedef pair<int,int> pi;
 typedef vector<int> vi;
+typedef unordered_set<int> usi;
 typedef vector<ll> vl;
 typedef vector<bool> vb;
 typedef vector<pi> vp;
@@ -16,30 +17,32 @@ typedef vector<pi> vp;
 #define PB push_back
 #define MP make_pair
 
-void print(vb x){
+void print(usi x){
     for(auto i:x)
         cout<<i<<' ';
     cout<<'\n';
 }
-// notice that the BFS visits the nodes in increasing order of their distances from the beginning node
-// meaning that each node is going to be visited by the best distance only.
 
-//graph with no weights
 vector<vi> graph;
 int n,m;
 vb visited;
-vb colours;
+usi blacks;
+usi whites;
 void BFS_colouring(int node){
     queue<int> q;
     q.push(node);
     visited[node]=true;
+    blacks.insert(node);
     while (!q.empty()){
         int parent=q.front();q.pop();
         for (auto child:graph[parent]){
             if(!visited[child]){
                 visited[child]=true;
                 q.push(child);
-                colours[child]=!colours[parent];
+                if(blacks.count(parent))
+                    whites.insert(child);
+                else
+                    blacks.insert(child);
             }
         }
 
@@ -47,30 +50,46 @@ void BFS_colouring(int node){
     return;
 }
 
+tuple<bool,usi,usi> is_bipartite(){
+    visited.resize(n+1);
+    for(int i=0;i<n;i++)
+        if(!visited[i])
+            BFS_colouring(i);
+    tuple<bool,usi,usi> not_bipartite={false,{},{}};
+    for (auto parent:blacks)
+        for (auto child:graph[parent])
+            if(blacks.count(child))
+                return not_bipartite;
+
+    for (auto parent:whites)
+        for (auto child:graph[parent])
+            if(whites.count(child))
+                return not_bipartite;
+
+    tuple<bool,usi,usi> bipartite={true,blacks,whites};
+    return bipartite;
+}
+
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    cin>>n>>m;
+    cin>>n>>m;// n starts from zero
     graph.resize(n+1);
     for(int i=0;i<m;i++){
         int a,b;cin>>a>>b;
         graph[a].PB(b);
         graph[b].PB(a);
     }
-    visited.resize(n+1);
-    colours.resize(n);
-    for(int i=0;i<n;i++)
-        if(!visited[i])
-            BFS_colouring(i);
-    bool ans=true;
-    for(int parent=0;parent<n;parent++)
-        for(auto child:graph[parent])
-            ans&=colours[parent]^colours[child];
-    if(ans)
-        cout<<"graph is bipartite\n";
-    else
-        cout<<"graph is not bipartite\n";
-    return 0;
+    auto ans=is_bipartite();
+    auto bipartite=get<0>(ans);
+    auto black=get<1>(ans);
+    auto white=get<2>(ans);
+    if(bipartite) {
+        cout << "graph can be divided into blacks: ";
+        print(blacks);
+        cout << "and whites:  ";
+        print(whites);
+    } else cout << "graph is not bipartite";
 }
 
 //example for input:
@@ -85,3 +104,5 @@ int main(){
 //2 8
 //8 9
 //9 10
+
+
